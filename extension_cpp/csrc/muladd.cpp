@@ -1,6 +1,7 @@
 #include <torch/extension.h>
 #include <ATen/TensorIterator.h>
 #include <ATen/native/cpu/Loops.h>
+#include <csrc/math.h>
 
 #include <vector>
 
@@ -40,7 +41,7 @@ at::Tensor mymuladd_cpu(const at::Tensor& a, const at::Tensor& b, const at::Tens
   ).build();
   AT_DISPATCH_FLOATING_AND_COMPLEX_TYPES(iter.common_dtype(), "mymuladd_cpu", [&]() {
     at::native::cpu_kernel(iter, [](scalar_t a, scalar_t b, scalar_t c) -> scalar_t {
-        return a * b + c;
+        return calc_mymuladd(a, b, c);
     });
   });
   return result;
@@ -85,7 +86,7 @@ at::Tensor mymul_cpu(const at::Tensor& a, const at::Tensor& b) {
   ).build();
   AT_DISPATCH_FLOATING_AND_COMPLEX_TYPES(iter.common_dtype(), "mymul_cpu", [&]() {
     at::native::cpu_kernel(iter, [](scalar_t a, scalar_t b) -> scalar_t {
-        return a * b;
+        return calc_mymul(a, b);
     });
   });
   return result;

@@ -1,5 +1,6 @@
 #include <torch/extension.h>
 #include <ATen/native/cuda/Loops.cuh>
+#include <csrc/math.h>
 
 #include <cuda.h>
 #include <cuda_runtime.h>
@@ -26,7 +27,7 @@ at::Tensor mymuladd_cuda(const at::Tensor& a, const at::Tensor& b, const at::Ten
   ).build();
   AT_DISPATCH_FLOATING_AND_COMPLEX_TYPES(iter.common_dtype(), "mymuladd_cuda", [&]() {
     at::native::gpu_kernel(iter, []GPU_LAMBDA(scalar_t a, scalar_t b, scalar_t c) -> scalar_t {
-        return a * b + c;
+        return calc_mymuladd(a, b, c);
     });
   });
   return result;
@@ -78,7 +79,7 @@ at::Tensor mymul_cuda(const at::Tensor& a, const at::Tensor& b) {
   ).build();
   AT_DISPATCH_FLOATING_AND_COMPLEX_TYPES(iter.common_dtype(), "mymul_cuda", [&]() {
     at::native::gpu_kernel(iter, []GPU_LAMBDA(scalar_t a, scalar_t b) -> scalar_t {
-        return a * b;
+        return calc_mymul(a, b);
     });
   });
   return result;
