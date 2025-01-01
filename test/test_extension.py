@@ -87,9 +87,9 @@ class TestMyMulAdd(TestCase):
 
         return [
             [make_tensor(3), make_tensor(3), make_tensor(3)],
-            [make_tensor(20), make_tensor(20), make_tensor(20)],
-            [make_tensor(20), make_nondiff_tensor(20), make_nondiff_tensor(20)],
-            [make_nondiff_tensor(2, 3), make_tensor(2, 3), make_tensor(2, 3)],
+            [make_tensor(1), make_tensor(20), make_tensor(20)],
+            [make_tensor(20), make_nondiff_tensor(20), make_nondiff_tensor(1)],
+            [make_nondiff_tensor(2, 1), make_tensor(2, 3), make_tensor(2, 3)],
         ]
 
     def _test_correctness(self, device):
