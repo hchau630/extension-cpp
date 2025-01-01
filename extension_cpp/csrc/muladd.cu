@@ -1,5 +1,5 @@
 #include <torch/extension.h>
-#include <../csrc/Math.h>
+#include <mymath.h>
 #include <ATen/native/cuda/Loops.cuh>
 
 #include <cuda.h>
