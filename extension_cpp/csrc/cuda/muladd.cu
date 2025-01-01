@@ -1,6 +1,6 @@
 #include <torch/extension.h>
-#include <mymath.h>
 #include <ATen/native/cuda/Loops.cuh>
+#include "../mymath.h"
 
 #include <cuda.h>
 #include <cuda_runtime.h>
