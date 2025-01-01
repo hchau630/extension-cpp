@@ -20,22 +20,20 @@ def muladd(a, b, c):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("func", choices=["muladd", "exp"])
-    parser.add_argument("example", choices=["py", "cpp", "cuda"])
+    parser.add_argument("example", choices=["py", "cpp"])
+    parser.add_argument("-d", "--device", choices=["cpu", "cuda"], default="cpu")
     parser.add_argument("-n", type=int, default=1 << 20)
     parser.add_argument("-r", "--runs", type=int, default=100)
     parser.add_argument("--scale", choices=["s", "ms", "us"], default="us")
-    parser.add_argument("-c", "--cuda", action="store_true")
-    parser.add_argument("-d", "--double", action="store_true")
+    parser.add_argument("--double", action="store_true")
     options = parser.parse_args()
 
     if options.example == "py":
         func = globals()[options.func]
     else:
         func = getattr(extension_cpp.ops, f"my{options.func}")
-    if options.example == "cuda":
-        options.cuda = True
 
-    device = torch.device("cuda") if options.cuda else torch.device("cpu")
+    device = torch.device(options.device)
     dtype = torch.float64 if options.double else torch.float32
 
     kwargs = {"dtype": dtype, "device": device, "requires_grad": True}

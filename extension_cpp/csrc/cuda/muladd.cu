@@ -20,7 +20,7 @@ at::Tensor mymuladd_cuda(const at::Tensor& a, const at::Tensor& b, const at::Ten
   TORCH_INTERNAL_ASSERT(c.device().type() == at::DeviceType::CUDA);
   at::Tensor a_contig = a.contiguous();
   at::Tensor b_contig = b.contiguous();
-  at::Tensor b_contig = c.contiguous();
+  at::Tensor c_contig = c.contiguous();
   at::Tensor result = torch::empty(a_contig.sizes(), a_contig.options());
   const float* a_ptr = a_contig.data_ptr<float>();
   const float* b_ptr = b_contig.data_ptr<float>();

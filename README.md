@@ -12,6 +12,7 @@ To get it to work on Axon with an A40 GPU, I performed the following steps:
 1) `conda create -n extension-cpp python=3.11`
 2) `pip install -r requirements.txt`
 3) `conda install nvidia/label/cuda-12.4.1::cuda-toolkit`
+4) `ml gcc/10.4`
 4) `export CPATH=/home/hc3190/.conda/envs/extension-cpp/targets/x86_64-linux/include/:$CPATH`
 5) `pip install .`
 
