@@ -11,7 +11,8 @@ at::Tensor mymuladd_cuda(const at::Tensor& a, const at::Tensor& b, const at::Ten
   TORCH_INTERNAL_ASSERT(a.device().type() == at::DeviceType::CUDA);
   TORCH_INTERNAL_ASSERT(b.device().type() == at::DeviceType::CUDA);
   TORCH_INTERNAL_ASSERT(c.device().type() == at::DeviceType::CUDA);
-  at::Tensor result = torch::empty(at::IntArrayRef(), at::DeviceType::CUDA).resize_(0);
+  at::ScalarType dtype = at::promote_types(at::promote_types(a.scalar_type(), b.scalar_type()), c.scalar_type());
+  at::Tensor result = torch::empty(at::IntArrayRef(), at::device(at::kCUDA).dtype(dtype)).resize_(0);
   auto iter = (
     at::TensorIteratorConfig()
     .set_check_mem_overlap(true)
@@ -63,8 +64,9 @@ at::Tensor mymuladd_cuda(const at::Tensor& a, const at::Tensor& b, const at::Ten
 
 at::Tensor mymul_cuda(const at::Tensor& a, const at::Tensor& b) {
   TORCH_INTERNAL_ASSERT(a.device().type() == at::DeviceType::CUDA);
-  TORCH_INTERNAL_ASSERT(b.device().type() == at::DeviceType::CUDA); 
-  at::Tensor result = torch::empty(at::IntArrayRef(), at::DeviceType::CUDA).resize_(0);
+  TORCH_INTERNAL_ASSERT(b.device().type() == at::DeviceType::CUDA);
+  at::ScalarType dtype = at::promote_types(a.scalar_type(), b.scalar_type());
+  at::Tensor result = torch::empty(at::IntArrayRef(), at::device(at::kCUDA).dtype(dtype)).resize_(0);
   auto iter = (
     at::TensorIteratorConfig()
     .set_check_mem_overlap(true)

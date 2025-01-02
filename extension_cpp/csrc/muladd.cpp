@@ -25,7 +25,11 @@ at::Tensor myexp_cpu(const at::Tensor& a) {
 }
 
 at::Tensor mymuladd_cpu(const at::Tensor& a, const at::Tensor& b, const at::Tensor& c) {
-  at::Tensor result = torch::empty(at::IntArrayRef()).resize_(0);
+  TORCH_INTERNAL_ASSERT(a.device().type() == at::DeviceType::CPU);
+  TORCH_INTERNAL_ASSERT(b.device().type() == at::DeviceType::CPU);
+  TORCH_INTERNAL_ASSERT(c.device().type() == at::DeviceType::CPU);
+  at::ScalarType dtype = at::promote_types(at::promote_types(a.scalar_type(), b.scalar_type()), c.scalar_type());
+  at::Tensor result = torch::empty(at::IntArrayRef(), dtype).resize_(0);
   auto iter = (
     at::TensorIteratorConfig()
     .set_check_mem_overlap(true)
@@ -71,7 +75,10 @@ at::Tensor mymuladd_cpu(const at::Tensor& a, const at::Tensor& b, const at::Tens
 // }
 
 at::Tensor mymul_cpu(const at::Tensor& a, const at::Tensor& b) {
-  at::Tensor result = torch::empty(at::IntArrayRef()).resize_(0);
+  TORCH_INTERNAL_ASSERT(a.device().type() == at::DeviceType::CPU);
+  TORCH_INTERNAL_ASSERT(b.device().type() == at::DeviceType::CPU);
+  at::ScalarType dtype = at::promote_types(a.scalar_type(), b.scalar_type());
+  at::Tensor result = torch::empty(at::IntArrayRef(), dtype).resize_(0);
   auto iter = (
     at::TensorIteratorConfig()
     .set_check_mem_overlap(true)
